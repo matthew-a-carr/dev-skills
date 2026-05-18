@@ -17,12 +17,17 @@ Work style: telegraph; noun-phrases ok; drop grammar; min tokens.
 - After edits, run a quick validation pass (frontmatter present, name matches dir, links resolve).
 
 ## Versioning (P0)
-- Every change to a skill bumps the plugin version in `.claude-plugin/plugin.json` and the matching `version` in `.claude-plugin/marketplace.json` — they must stay in sync.
-- Follow [semver](https://semver.org):
-  - **patch** (`0.1.0` → `0.1.1`): typo fixes, doc rewording, internal cleanup, no behaviour change for the agent invoking the skill.
-  - **minor** (`0.1.0` → `0.2.0`): new skill added, new capability inside an existing skill, new optional flag in the frontmatter.
-  - **major** (`0.1.0` → `1.0.0`): skill removed, renamed, or its activation `description` / invocation contract changes in a way that breaks consumers.
-- Bump in the same commit as the change. Tag the release (`git tag v0.2.0 && git push --tags`) when it makes sense — Claude Code's `/plugin marketplace update` then pulls cleanly.
+- [release-please](https://github.com/googleapis/release-please) handles bumps. **Do not** edit `version` fields in `plugin.json` / `marketplace.json` / `.release-please-manifest.json` directly.
+- Conventional Commits drive the bump:
+  - `fix:` → **patch** (`1.0.0` → `1.0.1`)
+  - `feat:` → **minor** (`1.0.0` → `1.1.0`)
+  - `feat!:` / `BREAKING CHANGE:` → **major** (`1.0.0` → `2.0.0`)
+  - `docs:`, `chore:`, `refactor:`, `test:`, `style:` → no release
+- Semantic meaning of major/minor/patch for this repo:
+  - **patch**: typo fixes, doc rewording, internal cleanup, no agent-visible behaviour change.
+  - **minor**: new skill added, new capability inside an existing skill.
+  - **major**: skill removed/renamed, or its `description` / activation contract changes in a way that breaks consumers.
+- Flow: push commit to `main` → release-please opens a Release PR → merge the PR → it tags the release and updates `CHANGELOG.md`.
 
 ## Naming (P0)
 - Skill dir + frontmatter `name`: kebab-case, lowercase, no underscores.
