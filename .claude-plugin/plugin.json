@@ -1,11 +1,11 @@
 {
-  "name": "matthew-a-carr",
-  "version": "1.0.1",
-  "description": "Matt Carr's curated agent skills.",
+  "name": "dev-skills",
+  "version": "2.0.0",
+  "description": "Personal agent skills: development workflow, planning, GitHub helpers, and utilities.",
   "author": {
     "name": "Matthew Carr",
     "url": "https://github.com/matthew-a-carr"
   },
-  "homepage": "https://github.com/matthew-a-carr/agent-scripts",
+  "homepage": "https://github.com/matthew-a-carr/dev-skills",
   "license": "MIT"
 }

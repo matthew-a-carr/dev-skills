@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.0.0] (2026-05-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* Plugin renamed from `matthew-a-carr` to `dev-skills`, and the GitHub repo
+  from `agent-scripts` to `dev-skills`. Distribution moves under the new
+  central `matthew-a-carr` marketplace at `matthew-a-carr/claude-plugins`.
+  Skill prefixes change from `matthew-a-carr:<skill>` to `dev-skills:<skill>`.
+  Update `enabledPlugins` from `matthew-a-carr@matthew-a-carr-skills` to
+  `dev-skills@matthew-a-carr`, and `extraKnownMarketplaces` to point at
+  `matthew-a-carr/claude-plugins`. GitHub's repo-rename redirect keeps old
+  URLs working for now, but updating refs is recommended.
+
 ## [1.0.1](https://github.com/matthew-a-carr/agent-scripts/compare/v1.0.0...v1.0.1) (2026-05-18)
 
 
