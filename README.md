@@ -1,4 +1,4 @@
-# Agent Scripts
+# Dev Skills
 
 A plugin marketplace of [Agent Skills](https://agentskills.io)-format skills for Claude Code, Codex CLI, Cursor, Gemini CLI, and any other host that speaks the open spec.
 
@@ -11,20 +11,20 @@ Attribution for forked skills: see [`skills/ATTRIBUTION.md`](skills/ATTRIBUTION.
 ### Claude Code
 
 ```text
-/plugin marketplace add matthew-a-carr/agent-scripts
-/plugin install matthew-a-carr@matthew-a-carr-skills
+/plugin marketplace add matthew-a-carr/claude-plugins
+/plugin install dev-skills@matthew-a-carr
 ```
 
 ### Codex CLI
 
 ```text
-$skill-installer matthew-a-carr/agent-scripts
+$skill-installer matthew-a-carr/dev-skills
 ```
 
 ### Any agent (skills.sh)
 
 ```bash
-npx skills@latest add matthew-a-carr/agent-scripts
+npx skills@latest add matthew-a-carr/dev-skills
 ```
 
 ### Symlink loop (live updates via `git pull`)
