@@ -5,9 +5,11 @@ description: >
   (npm/pnpm/yarn, Go, Python, Rust, GitHub Actions, Docker). Use when user
   wants to review/update/upgrade dependencies, triage or merge Dependabot
   PRs, audit a project for outdated or vulnerable packages, or apply a major
-  version upgrade safely. Patch/minor bumps batch and auto-apply when CI is
+  version upgrade safely — even if they just say "update everything" or
+  "check what's outdated". Patch/minor bumps batch and auto-apply when CI is
   green and release notes are clean; majors get one branch each with a full
   test gate. Supersedes dependabot-pr-merge.
+compatibility: Requires authenticated gh CLI, network access, and the project's native package tooling
 ---
 
 # Dependency Review
@@ -33,7 +35,7 @@ Review every dependency in the repo, update what's safe, upgrade majors carefull
 
 ### 1) Detect ecosystems
 
-Find manifests; use native tooling per ecosystem. Commands: [references/ecosystems.md](references/ecosystems.md).
+Find manifests; use native tooling per ecosystem. Once you know which ecosystems are present, read [references/ecosystems.md](references/ecosystems.md) for the outdated/update/audit commands of those ecosystems only.
 
 ```
 find . -path ./node_modules -prune -o -path ./vendor -prune -o \
