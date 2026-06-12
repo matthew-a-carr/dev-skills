@@ -5,7 +5,9 @@ description: >
   (Wiz security scans, GitHub Copilot, Claude, or other AI reviewers), fix
   failures and address findings, re-push until green, then merge. Use when
   user wants to auto-merge a PR, get a PR mergeable, watch a PR until it
-  lands, or address CI/security/AI review feedback and merge.
+  lands, or address CI/security/AI review feedback and merge — even if they
+  just say "babysit", "land", or "ship" the PR.
+compatibility: Requires authenticated gh CLI and network access
 ---
 
 # Auto Merge PR
@@ -44,6 +46,8 @@ gh run list --branch <headRefName> --json databaseId,name,conclusion
 gh run view <run-id> --log-failed
 ```
 
+- Classify first: flaky (timeout, runner/infra error, test unrelated to the diff) vs real.
+  Suspected flake → `gh run rerun <run-id> --failed` once; fails again → treat as real.
 - Read the failing step's log; fix the root cause (test, lint, build, type error), not the symptom.
 - Reproduce locally where possible (run the same test/lint command) before pushing.
 - Commit (Conventional Commits) and push to the PR branch; checks re-run.
@@ -94,6 +98,14 @@ Use the repo default method:
 gh repo view --json viewerDefaultMergeMethod
 gh pr merge <num> --squash --delete-branch
 ```
+
+All gates passed except checks still running → enable auto-merge instead of polling:
+
+```
+gh pr merge <num> --auto --squash --delete-branch
+```
+
+Only after feedback threads are resolved — auto-merge fires on green checks, it won't wait for you.
 
 ### 6) Report
 
