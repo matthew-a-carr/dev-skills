@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: skill-validator
+        name: Skill spec compliance
+        entry: uv run scripts/validate_skills.py
+        language: system
+        files: ^skills/
+        pass_filenames: false

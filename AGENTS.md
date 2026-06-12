@@ -53,6 +53,7 @@ Work style: telegraph; noun-phrases ok; drop grammar; min tokens.
 
 ## Local install (dev)
 - Symlink loop in README links every `skills/<name>/` into `~/.{claude,agents,cursor,gemini}/skills/`. Edits to the working tree go live immediately for every agent.
+- Pre-commit: `uvx pre-commit install` once. Hook runs `scripts/validate_skills.py` (uv + skill-validator, same gate as CI) on `skills/` changes.
 
 ## Critical thinking
 - Fix root cause, not band-aid.
