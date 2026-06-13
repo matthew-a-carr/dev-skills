@@ -1,4 +1,4 @@
-module github.com/matthew-a-carr/agent-scripts
+module github.com/matthew-a-carr/dev-skills
 
 go 1.25.5
 
