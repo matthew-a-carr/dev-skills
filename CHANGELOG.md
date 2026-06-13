@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.0.0](https://github.com/matthew-a-carr/dev-skills/compare/v1.0.0...v2.0.0) (2026-06-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* complete agent-scripts to dev-skills namespace rename ([#7](https://github.com/matthew-a-carr/dev-skills/issues/7))
+* **dependency-review:** dependabot-pr-merge skill removed; superseded by dependency-review.
+* plugin identifier changed from matthew-a-carr@matthew-a-carr-skills to dev-skills@matthew-a-carr. GitHub's repo-rename redirect keeps old URLs working, but settings that reference the old marketplace key or plugin name need updating.
+
+### Features
+
+* complete agent-scripts to dev-skills namespace rename ([#7](https://github.com/matthew-a-carr/dev-skills/issues/7)) ([caae63a](https://github.com/matthew-a-carr/dev-skills/commit/caae63ae821524f4d74fc3aa7d7b92479afa621d))
+* **dependency-review:** add multi-ecosystem dependency review skill ([#6](https://github.com/matthew-a-carr/dev-skills/issues/6)) ([1838b78](https://github.com/matthew-a-carr/dev-skills/commit/1838b7838ffa25daae040d985877a77260208723))
+* rename plugin to dev-skills, ship 2.0.0 ([3bf725e](https://github.com/matthew-a-carr/dev-skills/commit/3bf725ecf7d8977b4a6c8e833dc380d3cfd7540c))
+
+
+### Bug Fixes
+
+* **create-cli:** use relative reference path ([70074f6](https://github.com/matthew-a-carr/dev-skills/commit/70074f6d2c47f7b5b64fa381d15e9be849fbe90b))
+
 ## [1.0.0](https://github.com/matthew-a-carr/dev-skills/compare/v2.0.0...v1.0.0) (2026-06-12)
 
 
