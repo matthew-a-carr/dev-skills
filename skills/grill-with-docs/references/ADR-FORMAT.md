@@ -1,8 +1,15 @@
 # ADR Format
 
-ADRs live in `docs/adr/` and use sequential numbering: `0001-slug.md`, `0002-slug.md`, etc.
+ADRs live in `docs/decisions/` and use sequential numbering: `001-slug.md`,
+`002-slug.md`, etc. (A legacy `docs/adr/` is only used if the repo already has
+one — check `docs/agents/domain.md` for this repo's ADR home.)
 
-Create the `docs/adr/` directory lazily — only when the first ADR is needed.
+**If the repo has a `write-adr` skill or a documented ADR convention, defer to
+it** — it owns the template, the `docs/decisions/README.md` index, and the
+supersession wiring. The minimal format below is the fallback for a repo that
+has no ADR convention yet.
+
+Create the `docs/decisions/` directory lazily — only when the first ADR is needed.
 
 ## Template
 
@@ -24,7 +31,7 @@ Only include these when they add genuine value. Most ADRs won't need them.
 
 ## Numbering
 
-Scan `docs/adr/` for the highest existing number and increment by one.
+Scan `docs/decisions/` for the highest existing number and increment by one.
 
 ## When to offer an ADR
 

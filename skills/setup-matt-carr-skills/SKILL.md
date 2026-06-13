@@ -1,6 +1,6 @@
 ---
 name: setup-matt-carr-skills
-description: Sets up an `## Agent skills` block in AGENTS.md/CLAUDE.md and `docs/agents/` so the engineering skills know this repo's issue tracker (GitHub or local markdown), triage label vocabulary, and domain doc layout. Run before first use of `to-issues`, `to-prd`, `triage`, `diagnose`, `tdd`, `improve-codebase-architecture`, or `zoom-out` — or if those skills appear to be missing context about the issue tracker, triage labels, or domain docs.
+description: Sets up an `## Agent skills` block in AGENTS.md/CLAUDE.md and `docs/agents/` so the engineering skills know this repo's issue tracker (GitHub or local markdown), workflow label vocabulary, domain docs, and verification commands. Run before first use of `tdd`, `improve-codebase-architecture`, `grill-with-docs`, or the lifecycle skills (`draft-spec`, `implement-spec`) — or if those skills appear to be missing context about the issue tracker, labels, domain docs, or how to verify a change.
 disable-model-invocation: true
 ---
 
@@ -9,8 +9,9 @@ disable-model-invocation: true
 Scaffold the per-repo configuration that the engineering skills assume:
 
 - **Issue tracker** — where issues live (GitHub by default; local markdown is also supported out of the box)
-- **Triage labels** — the strings used for the five canonical triage roles
-- **Domain docs** — where `CONTEXT.md` and ADRs live, and the consumer rules for reading them
+- **Workflow labels** — the label strings that drive this repo's lifecycle (e.g. the `claude:*` labels travel-planner uses)
+- **Domain docs** — where the repo's domain language and ADRs live, and the consumer rules for reading them
+- **Stack & verification** — this repo's toolchain and the commands skills run to verify a change
 
 This is a prompt-driven skill, not a deterministic script. Explore, present what you found, confirm with the user, then write.
 
@@ -22,8 +23,8 @@ Look at the current repo to understand its starting state. Read whatever exists;
 
 - `git remote -v` and `.git/config` — is this a GitHub repo? Which one?
 - `AGENTS.md` and `CLAUDE.md` at the repo root — does either exist? Is there already an `## Agent skills` section in either?
-- `CONTEXT.md` and `CONTEXT-MAP.md` at the repo root
-- `docs/adr/` and any `src/*/docs/adr/` directories
+- The repo's domain-language home — `CONSTITUTION.md`, root/per-layer `AGENTS.md`, or a `CONTEXT.md`/`CONTEXT-MAP.md` if one exists
+- `docs/decisions/` (preferred ADR home) or a legacy `docs/adr/` directory
 - `docs/agents/` — does this skill's prior output already exist?
 - `.scratch/` — sign that a local-markdown issue tracker convention is already in use
 
@@ -35,7 +36,7 @@ Assume the user does not know what these terms mean. Each section starts with a 
 
 **Section A — Issue tracker.**
 
-> Explainer: The "issue tracker" is where issues live for this repo. Skills like `to-issues`, `triage`, `to-prd`, and `qa` read from and write to it — they need to know whether to call `gh issue create`, write a markdown file under `.scratch/`, or follow some other workflow you describe. Pick the place you actually track work for this repo.
+> Explainer: The "issue tracker" is where issues live for this repo. The lifecycle skills (`draft-spec`, `implement-spec`) and other engineering skills read from and write to it — they need to know whether to call `gh issue create`, write a markdown file under `.scratch/`, or follow some other workflow you describe. Pick the place you actually track work for this repo.
 
 Default posture: these skills were designed for GitHub. If a `git remote` points at GitHub, propose that. If a `git remote` points at GitLab (`gitlab.com` or a self-hosted host), propose GitLab. Otherwise (or if the user prefers), offer:
 
@@ -44,28 +45,30 @@ Default posture: these skills were designed for GitHub. If a `git remote` points
 - **Local markdown** — issues live as files under `.scratch/<feature>/` in this repo (good for solo projects or repos without a remote)
 - **Other** (Jira, Linear, etc.) — ask the user to describe the workflow in one paragraph; the skill will record it as freeform prose
 
-**Section B — Triage label vocabulary.**
+**Section B — Workflow labels.**
 
-> Explainer: When the `triage` skill processes an incoming issue, it moves it through a state machine — needs evaluation, waiting on reporter, ready for an AFK agent to pick up, ready for a human, or won't fix. To do that, it needs to apply labels (or the equivalent in your issue tracker) that match strings *you've actually configured*. If your repo already uses different label names (e.g. `bug:triage` instead of `needs-triage`), map them here so the skill applies the right ones instead of creating duplicates.
+> Explainer: The autonomous lifecycle is label-driven — opening or merging an issue/PR with a given label fires the matching routine. The skills need to apply the label strings *this repo has actually configured*. Map them here so skills apply the right ones instead of creating duplicates.
 
-The five canonical roles:
+The default vocabulary is travel-planner's `claude:*` lifecycle (ADR 057):
 
-- `needs-triage` — maintainer needs to evaluate
-- `needs-info` — waiting on reporter
-- `ready-for-agent` — fully specified, AFK-ready (an agent can pick it up with no human context)
-- `ready-for-human` — needs human implementation
-- `wontfix` — will not be actioned
+- `claude:plan` — issue → draft a SPEC (fires `draft-spec`)
+- `claude:plan-epic` — issue → draft an EPIC (fires `draft-epic`)
+- `claude:revise-now` — spec/epic PR → rewrite from review feedback (fires `revise-spec`)
+- `claude:implement` — spec PR merged with this label → implement (fires `implement-spec`)
+- `claude:done` — implementation PR is ready for review
+- `claude:blocked` — a routine hit a wall and needs a human
+- `claude:planned` — issue already drafted; routine won't redo it
 
-Default: each role's string equals its name. Ask the user if they want to override any. If their issue tracker has no existing labels, the defaults are fine.
+Default: these strings as-is. Ask the user to override any that differ in this repo, or to describe a different lifecycle if the repo doesn't use `claude:*` labels.
 
 **Section C — Domain docs.**
 
-> Explainer: Some skills (`improve-codebase-architecture`, `diagnose`, `tdd`) read a `CONTEXT.md` file to learn the project's domain language, and `docs/adr/` for past architectural decisions. They need to know whether the repo has one global context or multiple (e.g. a monorepo with separate frontend/backend contexts) so they look in the right place.
+> Explainer: Some skills (`improve-codebase-architecture`, `grill-with-docs`, `tdd`) need to learn the project's domain language and read past architectural decisions. They need to know *where those live in this repo*. Don't assume a `CONTEXT.md` exists — name the repo's actual home.
 
-Confirm the layout:
+Record two things:
 
-- **Single-context** — one `CONTEXT.md` + `docs/adr/` at the repo root. Most repos are this.
-- **Multi-context** — `CONTEXT-MAP.md` at the root pointing to per-context `CONTEXT.md` files (typically a monorepo).
+- **Domain language** — where the project's vocabulary lives. Default to `CONSTITUTION.md` + root/per-layer `AGENTS.md` (travel-planner's model). A `CONTEXT.md` glossary is optional: use it if present, but don't assert it.
+- **ADRs** — `docs/decisions/NNN-title.md` (the standard, with a README index and the `write-adr` skill). A legacy `docs/adr/` is tolerated if a repo already uses it, but new repos use `docs/decisions/`.
 
 **Section D — Stack & verification commands.**
 
@@ -83,7 +86,7 @@ Detect the toolchain and propose the commands; don't assume one ecosystem:
 - **Lint/format, type-check, unit, integration/e2e, build**: read the repo's
   scripts (`package.json` `scripts`, `Makefile`, `justfile`, CI workflow) and
   propose the real commands. If the repo already documents a verification
-  table in `AGENTS.md`/`CONTEXT.md`, point at it rather than duplicating.
+  table in `AGENTS.md`/`CONSTITUTION.md`, point at it rather than duplicating.
 
 Confirm the detected commands with the user before writing.
 
@@ -92,7 +95,7 @@ Confirm the detected commands with the user before writing.
 Show the user a draft of:
 
 - The `## Agent skills` block to add to whichever of `CLAUDE.md` / `AGENTS.md` is being edited (see step 4 for selection rules)
-- The contents of `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, `docs/agents/domain.md`, `docs/agents/verification.md`
+- The contents of `docs/agents/issue-tracker.md`, `docs/agents/workflow-labels.md`, `docs/agents/domain.md`, `docs/agents/verification.md`
 
 Let them edit before writing.
 
@@ -117,9 +120,9 @@ The block:
 
 [one-line summary of where issues are tracked]. See `docs/agents/issue-tracker.md`.
 
-### Triage labels
+### Workflow labels
 
-[one-line summary of the label vocabulary]. See `docs/agents/triage-labels.md`.
+[one-line summary of the lifecycle label vocabulary]. See `docs/agents/workflow-labels.md`.
 
 ### Domain docs
 
@@ -135,7 +138,7 @@ Then write the three docs files using the seed templates in this skill folder as
 - [issue-tracker-github.md](./references/issue-tracker-github.md) — GitHub issue tracker
 - [issue-tracker-gitlab.md](./references/issue-tracker-gitlab.md) — GitLab issue tracker
 - [issue-tracker-local.md](./references/issue-tracker-local.md) — local-markdown issue tracker
-- [triage-labels.md](./references/triage-labels.md) — label mapping
+- [workflow-labels.md](./references/workflow-labels.md) — lifecycle label mapping
 - [domain.md](./references/domain.md) — domain doc consumer rules + layout
 - [verification.md](./references/verification.md) — stack + verification command table (the injection point for universal skills)
 

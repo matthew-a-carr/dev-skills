@@ -1,6 +1,6 @@
 ---
 name: improve-codebase-architecture
-description: Find deepening opportunities in a codebase, informed by the domain language in CONTEXT.md and the decisions in docs/adr/. Use when the user wants to improve architecture, find refactoring opportunities, consolidate tightly-coupled modules, or make a codebase more testable and AI-navigable.
+description: Find deepening opportunities in a codebase, informed by the repo's domain language (CONTEXT.md if present, else CONSTITUTION.md / AGENTS.md per docs/agents/domain.md) and the decisions in docs/decisions/. Use when the user wants to improve architecture, find refactoring opportunities, consolidate tightly-coupled modules, or make a codebase more testable and AI-navigable.
 ---
 
 # Improve Codebase Architecture
@@ -53,9 +53,9 @@ Present a numbered list of deepening opportunities. For each candidate:
 - **Solution** — plain English description of what would change
 - **Benefits** — explained in terms of locality and leverage, and also in how tests would improve
 
-**Use CONTEXT.md vocabulary for the domain, and [LANGUAGE.md](references/LANGUAGE.md) vocabulary for the architecture.** If `CONTEXT.md` defines "Order," talk about "the Order intake module" — not "the FooBarHandler," and not "the Order service."
+**Use the repo's domain vocabulary, and [LANGUAGE.md](references/LANGUAGE.md) vocabulary for the architecture.** The domain home is whatever `docs/agents/domain.md` names — a `CONTEXT.md` glossary if the repo has one, otherwise `CONSTITUTION.md` / `AGENTS.md`. If the domain defines "Order," talk about "the Order intake module" — not "the FooBarHandler," and not "the Order service."
 
-**ADR conflicts**: if a candidate contradicts an existing ADR, only surface it when the friction is real enough to warrant revisiting the ADR. Mark it clearly (e.g. _"contradicts ADR-0007 — but worth reopening because…"_). Don't list every theoretical refactor an ADR forbids.
+**ADR conflicts**: if a candidate contradicts an existing ADR (in `docs/decisions/`), only surface it when the friction is real enough to warrant revisiting the ADR. Mark it clearly (e.g. _"contradicts ADR-007 — but worth reopening because…"_). Don't list every theoretical refactor an ADR forbids.
 
 Do NOT propose interfaces yet. Ask the user: "Which of these would you like to explore?"
 
@@ -65,7 +65,7 @@ Once the user picks a candidate, drop into a grilling conversation. Walk the des
 
 Side effects happen inline as decisions crystallize:
 
-- **Naming a deepened module after a concept not in `CONTEXT.md`?** Add the term to `CONTEXT.md` — same discipline as the `/grill-with-docs` skill. Create the file lazily if it doesn't exist.
-- **Sharpening a fuzzy term during the conversation?** Update `CONTEXT.md` right there.
-- **User rejects the candidate with a load-bearing reason?** Offer an ADR, framed as: _"Want me to record this as an ADR so future architecture reviews don't re-suggest it?"_ Only offer when the reason would actually be needed by a future explorer to avoid re-suggesting the same thing — skip ephemeral reasons ("not worth it right now") and self-evident ones. The `/grill-with-docs` skill has the ADR format template.
+- **Naming a deepened module after a concept not in the domain glossary?** If the repo keeps a `CONTEXT.md`, add the term there — same discipline as the `/grill-with-docs` skill (create it lazily). If the repo's domain language lives in `CONSTITUTION.md` / `AGENTS.md` instead, note the term for the human rather than inventing a glossary.
+- **Sharpening a fuzzy term during the conversation?** Update the domain glossary right there if the repo has one.
+- **User rejects the candidate with a reason worth keeping?** Offer an ADR, framed as: _"Want me to record this as an ADR so future architecture reviews don't re-suggest it?"_ Only offer when the reason would actually be needed by a future explorer to avoid re-suggesting the same thing — skip ephemeral reasons ("not worth it right now") and self-evident ones. Use the repo's `write-adr` skill if it has one, else the `/grill-with-docs` ADR format template.
 - **Want to explore alternative interfaces for the deepened module?** See [INTERFACE-DESIGN.md](references/INTERFACE-DESIGN.md).

@@ -12,7 +12,8 @@ description: >
 # Security & Hardening
 
 Defensive review for authorized work on your own repos. Pairs with
-`../dependency-review` (CVE triage) and `code-review`/`review-implementation`.
+`../dependency-review` (CVE triage) and the principles review (the
+`architecture-review` skill, or the repo's implementation-review step).
 
 ## Threat checklist (OWASP Top 10, web-app slice)
 
