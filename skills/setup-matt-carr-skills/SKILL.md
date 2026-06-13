@@ -9,7 +9,7 @@ disable-model-invocation: true
 Scaffold the per-repo configuration that the engineering skills assume:
 
 - **Issue tracker** — where issues live (GitHub by default; local markdown is also supported out of the box)
-- **Workflow labels** — the label strings that drive this repo's lifecycle (e.g. the `claude:*` labels travel-planner uses)
+- **Workflow labels** — the label strings that drive this repo's lifecycle (e.g. the `ai:*` labels travel-planner uses)
 - **Domain docs** — where the repo's domain language and ADRs live, and the consumer rules for reading them
 - **Stack & verification** — this repo's toolchain and the commands skills run to verify a change
 
@@ -49,17 +49,17 @@ Default posture: these skills were designed for GitHub. If a `git remote` points
 
 > Explainer: The autonomous lifecycle is label-driven — opening or merging an issue/PR with a given label fires the matching routine. The skills need to apply the label strings *this repo has actually configured*. Map them here so skills apply the right ones instead of creating duplicates.
 
-The default vocabulary is travel-planner's `claude:*` lifecycle (ADR 057):
+The default vocabulary is travel-planner's `ai:*` lifecycle (ADR 057):
 
-- `claude:plan` — issue → draft a SPEC (fires `draft-spec`)
-- `claude:plan-epic` — issue → draft an EPIC (fires `draft-epic`)
-- `claude:revise-now` — spec/epic PR → rewrite from review feedback (fires `revise-spec`)
-- `claude:implement` — spec PR merged with this label → implement (fires `implement-spec`)
-- `claude:done` — implementation PR is ready for review
-- `claude:blocked` — a routine hit a wall and needs a human
-- `claude:planned` — issue already drafted; routine won't redo it
+- `ai:plan` — issue → draft a SPEC (fires `draft-spec`)
+- `ai:plan-epic` — issue → draft an EPIC (fires `draft-epic`)
+- `ai:revise-now` — spec/epic PR → rewrite from review feedback (fires `revise-spec`)
+- `ai:implement` — spec PR merged with this label → implement (fires `implement-spec`)
+- `ai:done` — implementation PR is ready for review
+- `ai:blocked` — a routine hit a wall and needs a human
+- `ai:planned` — issue already drafted; routine won't redo it
 
-Default: these strings as-is. Ask the user to override any that differ in this repo, or to describe a different lifecycle if the repo doesn't use `claude:*` labels.
+Default: these strings as-is. Ask the user to override any that differ in this repo, or to describe a different lifecycle if the repo doesn't use `ai:*` labels.
 
 **Section C — Domain docs.**
 
