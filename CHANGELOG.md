@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.0](https://github.com/matthew-a-carr/agent-skills/compare/v3.0.0...v3.1.0) (2026-06-14)
+
+
+### Features
+
+* consolidate lifecycle skills from travel-planner ([#13](https://github.com/matthew-a-carr/agent-skills/issues/13)) ([e0e753e](https://github.com/matthew-a-carr/agent-skills/commit/e0e753e6534e8020dec95e93492d45c89e0f48fc))
+
 ## [3.0.0](https://github.com/matthew-a-carr/dev-skills/compare/v2.0.0...v3.0.0) (2026-06-14)
 
 
